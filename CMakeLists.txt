@@ -19,3 +19,4 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_executable(${PROJECT_NAME})
 
 add_subdirectory(src)
+add_subdirectory(external)
