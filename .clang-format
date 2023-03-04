@@ -109,7 +109,7 @@ IncludeCategories:
     SortPriority:    1
     CaseSensitive:   false
   # External libraries.
-  - Regex:           '^((<|")(pyforel)/)'
+  - Regex:           '^((<|")(forek)/)'
     Priority:        2
     SortPriority:    3
     CaseSensitive:   false
