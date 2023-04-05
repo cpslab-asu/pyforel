@@ -1,0 +1,16 @@
+fn hello(x: Proposition): {
+   not { x }
+}
+
+fn goodbye(x: Proposition, y: Proposition): {
+   { x } or { y }
+}
+
+var x;
+
+if { hello(x) }: {
+   goodbye(x, y);
+   goodbye(y, x);
+} else: {
+  hello(y);
+}
