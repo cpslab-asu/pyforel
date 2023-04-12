@@ -1,3 +1,3 @@
-target_sources(pyforel PRIVATE
+target_sources(${PROJECT_NAME} PRIVATE
   main.cpp
 )

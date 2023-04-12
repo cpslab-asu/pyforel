@@ -184,4 +184,4 @@ fragment DIGIT: [0-9] ;
 ///
 /// This includes one or more spaces, tabs, carriage-returns (Windows), and
 /// newlines.
-Whitespace : [ \t\r\n]+ -> skip;
+Whitespace : [ \t]+ -> skip;

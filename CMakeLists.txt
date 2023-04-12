@@ -18,7 +18,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable(${PROJECT_NAME})
 
-add_subdirectory(src)
+target_include_directories(${PROJECT_NAME}
+  PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/external/antlr4/runtime/Cpp/runtime/src/>
+  PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/>
+)
 
+target_link_libraries(${PROJECT_NAME} antlr4_static)
+
+add_subdirectory(src)
 add_subdirectory(external)
-add_subdirectory(extras)
+add_subdirectory(extras EXCLUDE_FROM_ALL)

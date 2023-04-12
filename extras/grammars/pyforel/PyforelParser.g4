@@ -11,17 +11,15 @@ program : (statement)* ;
 /// Simple statements do not introduce a new scope whereas compound statements
 /// do introduction a new scope.
 statement : LeftParenthesis statement RightParenthesis
-    | simpleStatement (Semicolon simpleStatement)* (Semicolon)?
+    | simpleStatement (Semicolon simpleStatement)* (Semicolon)? Newline
     | compoundStatement
     ;
 
 /// A simple statement.
 ///
-/// A simple statement is considered any statment that can be written in a single
+/// A simple statement is considered any statement that can be written in a single
 /// line, accordingly. These statments most commonly reflect operands.
 simpleStatement : functionCallStatement
-    | clauseStatement
-
     | True
     | False
     | Identifier
@@ -47,19 +45,19 @@ argList : Identifier Comma argList
 compoundStatement : ifStatement
     | functionDefinitionStatement
     | temporalStatement
-    | freezeStatement
-    | varQualifierStatement
+    | freezeTimeStatement
+    | objectQualifierStatement
     ;
 
 /// The compound statement, if.
 ///
 /// This statement is reflective of the implication operator.
-ifStatement : If newScope Colon newScope (elifStatement)* (elseStatement)? ;
+ifStatement : If clauseStatement Colon newScope (elifStatement)* (elseStatement)? ;
 
 /// The compound statement, elif.
 ///
 /// This statement is reflective of a specialized implication operator.
-elifStatement : ElseIf newScope Colon newScope ;
+elifStatement : ElseIf Colon newScope ;
 
 /// The compound statement, else.
 ///
@@ -71,7 +69,7 @@ clauseStatement : LeftParenthesis clauseStatement RightParenthesis
     | clauseStatement And clauseStatement
     | clauseStatement Or clauseStatement
 
-    | newScope
+    | simpleStatement
     ;
 
 functionDefinitionStatement : Fn Identifier LeftParenthesis (paramList)?
@@ -95,24 +93,22 @@ parameter : Identifier (Colon Identifier)? ;
 temporalStatement : Eventually (bounds)? Colon newScope
     | Always (bounds)? Colon newScope
     | Next (bounds)? Colon newScope
-
-    | Release (bounds)? newScope With newScope
-    | Keep (bounds)? newScope Upto  newScope
     ;
 
 /// A boundary.
 ///
 /// `within 10`, `in 5`, `from 2 to 3`.
-bounds : Within Scalar
-    | In Scalar
+bounds : Within Scalar Upto Scalar
+    | Within Scalar To Scalar
+    | From Scalar Upto Scalar
     | From Scalar To Scalar
     ;
 
 /// A compound statement, freeze time quantifier.
-freezeStatement : AtWord Identifier Colon newScope ;
+freezeTimeStatement : AtWord Identifier Colon newScope ;
 
 /// A variable qualifier.
-varQualifierStatement : Exists argList Colon newScope
+objectQualifierStatement : Exists argList Colon newScope
     | Forall argList Colon newScope
     ;
 
@@ -120,4 +116,5 @@ varQualifierStatement : Exists argList Colon newScope
 ///
 /// This statement creates a new scope (i.e., subformula) that any statement can
 /// be effectively written.
-newScope : LeftBrace statement RightBrace ;
+newScope : simpleStatement
+    | Newline Indent statement+ Dedent ;
