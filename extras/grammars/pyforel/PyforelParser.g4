@@ -9,7 +9,7 @@ program : (statement)* ;
 /// A statement is either simple (inline) or compound (multiline).
 ///
 /// Simple statements do not introduce a new scope whereas compound statements
-/// do introduction a new scope.
+/// do introduce a new scope.
 statement : LeftParenthesis statement RightParenthesis
     | simpleStatement (Semicolon simpleStatement)* (Semicolon)? Newline
     | compoundStatement
